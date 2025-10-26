@@ -114,7 +114,7 @@ startConvertScript = () => {
             if (audio.fileName != ""){
                 fs.copyFileSync("audios/"+audio.fileName, gameAudiosLocation+"/"+audio.id+".ogg")
             }
-            categoryAudiosData.push(audio.id+"|"+audio.tagId+"|"+(audio.textIndex)+"|"+audioMetadata)
+            categoryAudiosData.push(audio.id+"|en"+"|"+audio.tagId+"|"+(audio.textIndex)+"|"+audioMetadata)
         }
         categoryData+=categoryAudiosData.join("|")
         audiosCategory.push(categoryData)
