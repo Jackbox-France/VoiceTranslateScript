@@ -81,43 +81,24 @@ function startConvertScript(){
 
     // A partir de ces données, on peut maintenant créer un fichier txt que les traducteurs pourront utiliser
     final += 
-    `Ceci est un fichier de traduction Jackbox France
-
-Assurez vous de suivre les instructions à la lettre pour que la traduction fonctionne correctement
-    - Chaque catégorie contient les audios qui vont ensemble. Par exemple, tous les audios qui sont dits à la fin du jeu etc...\n
-    - Une catégorie peut avoir plusieurs types : Texte, Audio et Graphique. Dans notre cas, il faut modifier seulement les catégories de type Audio
-    - Les audios peuvent être de différents types : Effaçables ou non effaçables. 
-        Les audios effaçables sont des audios choisis au hasard par le jeu. Par exemple, si il y a deux audios effaçables dans une même catégorie, le jeu choisira au hasard de dire le premier ou le deuxième audio, il n'est pas nécessaire d'avoir plus d'un audio non effaçable si vous voulez une traduction minimale.
-        Les audios non effaçables sont ceux qui peuvent être utilisés n'importe quand dans le jeu, rien est aléatoire. Il est important de ne pas effacer les audios non effaçables, sinon le jeu ne fonctionnera pas correctement.  
-    - Pour chaque audio, vous devez traduire le texte qui est écrit dans le jeu en face de la partie TEXTE TRADUIT. Si vous faites un audio pour ce texte, mettez l'audio dans le dossier audios et entrez le nom de votre fichier dans FICHIER AUDIO.
-    - Si il n'y a que des audios effaçables dans une catégories, vous pouvez ajouter un nouvel audio sans soucis. Pour se faire, ajoutez un audio dans une catégorie comme dans cet exemple :
-        AUDIO :
-            IDENTIFIANT DE L'AUDIO DANS LE JEU : x | 0
-            TEXTE : 
-            TEXTE TRADUIT : <Votre traduction>
-            FICHIER AUDIO : <Votre fichier audio>
-            EFFAÇABLE : OUI
-    `
+    `Ceci est un fichier de traduction de voix Jackbox France`
 
     final+="\n\n\n"
 
     for (var i in categories){
         let category = categories[i];
-        final += "CATEGORIE : "+category.id+" ("+category.type+")\n\n";
-        for (var j in category.audios){
-            let audio = category.audios[j];
-            final += "   AUDIO :\n";
-            final += "      IDENTIFIANT DE L'AUDIO DANS LE JEU : "+audio.identifiant+" | "+audio.langue+" | "+audio.tagIndex+"\n"
-            final += "      TEXTE : "+texts[audio.textIndex]+" | "+audio.textIndex+"\n"
-            final += "      TEXTE TRADUIT : \n"
-            final += "      FICHIER AUDIO : \n"
-            final += "      EFFAÇABLE : "+(audio.tagIndex == 0?"OUI":"NON")+"\n\n"
+        if (category.type == "AUDIO"){
+            final += "CATEGORIE ["+category.id+"]\n";
+            for (var j in category.audios){
+                let audio = category.audios[j];
+                final += "["+audio.identifiant+"] "+texts[audio.textIndex]+"\n";
+            }
+            final += "\n";
         }
-        final += "\n";
     }
-    fs.writeFileSync("output/Intermission.json", JSON.stringify(categories));
+    fs.writeFileSync("output/Intermission_VOICE.json", JSON.stringify(categories));
 
     // Reconstruction des strings
     
-    fs.writeFileSync('output/A_TRADUIRE.txt', final);
+    fs.writeFileSync('output/A_TRADUIRE_VOICE.txt', final);
 }
